@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "jababeka_1",
+    "database": "BCR_API",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "jababeka_1",
+    "database": "BCR_API",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "postgres",
+    "password": "jababeka_1",
+    "database": "BCR_API",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
