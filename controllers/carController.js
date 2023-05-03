@@ -1,8 +1,8 @@
-const { car } = require("../models");
+const carService = require("../service/carService");
 
 module.exports = {
   async list(req, res) {
-    const list = await car.findAll();
+    const list = await carService.getAllData();
 
     res.status(200).json({
       status: 200,
@@ -11,26 +11,12 @@ module.exports = {
     });
   },
 
-  //   async findId(req,res){
-
-  //   },
-
   async store(req, res) {
-    const { plate, model, manufacture, capacity, year, transmission } =
-      req.body;
+    const value = req.body;
 
-    await car.create({
-      plate,
-      model,
-      manufacture,
-      capacity,
-      year,
-      transmission,
-    });
+    await carService.storeData(value);
 
-    const data = await car.findOne({
-      order: [["id", "DESC"]],
-    });
+    const data = await carService.getLatestData();
 
     res.status(201).json({
       status: 201,
@@ -40,28 +26,13 @@ module.exports = {
   },
 
   async update(req, res) {
-    const { plate, model, manufacture, capacity, year, transmission } =
-      req.body;
+    const value = req.body;
 
     const id = req.params.id;
 
-    await car.update(
-      {
-        plate,
-        model,
-        manufacture,
-        capacity,
-        year,
-        transmission,
-      },
-      {
-        where: {
-          id,
-        },
-      }
-    );
+    await carService.updateData(id, value);
 
-    const data = await car.findByPk(id);
+    const data = await carService.getDataById(id);
 
     res.status(202).json({
       status: 202,
@@ -73,11 +44,7 @@ module.exports = {
   async destroy(req, res) {
     const id = req.params.id;
 
-    car.destroy({
-      where: {
-        id,
-      },
-    });
+    await carService.destroyData(id);
 
     res.status(202).json({
       status: 202,

@@ -1,39 +1,36 @@
-const { user } = require("../models");
+const userService = require("../service/userService");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
-dotenv.config();
+require("dotenv").config();
 
 module.exports = {
   async signUp(req, res) {
-    const { username, email } = req.body;
-    const role = "member";
+    const value = req.body;
+    value.role = "member";
 
-    const rgsEmail = await user.findAll({
-      where: {
-        email: email,
-      },
-    });
+    const rgsEmail = await userService.getDataByEmail(email);
 
-    if (rgsEmail[0]) {
-      return res.status(400).json({
+    if (rgsEmail) {
+      res.status(400).json({
         message: "Email already in use",
       });
+      return;
     }
 
     const salt = await bcrypt.genSalt(10);
-    const password = await bcrypt.hash(req.body.password, salt);
+    value.password = await bcrypt.hash(req.body.password, salt);
 
-    await user.create({
-      username,
-      email,
-      password,
-      role,
-    });
+    await userService.storeData(value);
 
-    const data = await user.findOne({
-      order: [["id", "DESC"]],
-    });
+    const attributes = [
+      "id",
+      "username",
+      "email",
+      "role",
+      "createdAt",
+      "updatedAt",
+    ];
+    const data = await userService.getDataLatest(attributes);
 
     res.status(201).json({
       status: 201,
@@ -42,24 +39,114 @@ module.exports = {
     });
   },
 
-  //   async signIn(req, res) {
-  //     const user = await user.findOne({ where: { email: req.body.email } });
-  //     if (user) {
-  //       const password_valid = await bcrypt.compare(
-  //         req.body.password,
-  //         user.password
-  //       );
-  //       if (password_valid) {
-  //         token = jwt.sign(
-  //           { id: user.id, email: user.email, role: user.role },
-  //           process.env.ACCESS_TOKEN_SECRET
-  //         );
-  //         res.status(200).json({ token: token });
-  //       } else {
-  //         res.status(400).json({ error: "Password Incorrect" });
-  //       }
-  //     } else {
-  //       res.status(404).json({ error: "User does not exist" });
-  //     }
-  //   },
+  async signIn(req, res) {
+    const User = await userService.getDataByEmail(req.body.email);
+
+    if (!User) {
+      res.status(404).json({
+        status: 404,
+        message: "User does not exist",
+      });
+      return;
+    }
+
+    const password_valid = await bcrypt.compare(
+      req.body.password,
+      User.password
+    );
+
+    if (!password_valid) {
+      res.status(400).json({
+        status: 400,
+        message: "User Password Incorrect",
+      });
+      return;
+    }
+
+    token = jwt.sign(
+      {
+        id: User.id,
+        username: User.username,
+        email: User.email,
+        role: User.role,
+      },
+      process.env.ACCESS_TOKEN_SECRET,
+      {
+        expiresIn: "1d",
+      }
+    );
+
+    const attributes = [
+      "id",
+      "username",
+      "email",
+      "role",
+      "createdAt",
+      "updatedAt",
+    ];
+
+    const data = await userService.getDataByIdWithAttr(User.id, attributes);
+
+    res.status(200).json({
+      status: 200,
+      message: "User SignIn was Succesfully",
+      data: data,
+      token: token,
+    });
+  },
+
+  async addAdmin(req, res) {
+    const value = req.body;
+    value.role = "admin";
+
+    const rgsEmail = await userService.getDataByEmail(email);
+
+    if (rgsEmail) {
+      res.status(400).json({
+        message: "Email already in use",
+      });
+      return;
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    value.password = await bcrypt.hash(req.body.password, salt);
+
+    await userService.storeData(value);
+
+    const attributes = [
+      "id",
+      "username",
+      "email",
+      "role",
+      "createdAt",
+      "updatedAt",
+    ];
+    const data = await userService.getDataLatest(attributes);
+
+    res.status(201).json({
+      status: 201,
+      message: "Data Creation was Successfully",
+      data: data,
+    });
+  },
+
+  async currentUser(req, res) {
+    const User = req.user;
+
+    const attributes = [
+      "id",
+      "username",
+      "email",
+      "role",
+      "createdAt",
+      "updatedAt",
+    ];
+
+    const data = await userService.getDataByIdWithAttr(User.id, attributes);
+    res.status(200).json({
+      status: 200,
+      message: "Getting data was Successfully",
+      data: data,
+    });
+  },
 };
