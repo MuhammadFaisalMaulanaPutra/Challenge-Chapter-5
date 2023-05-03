@@ -20,10 +20,15 @@ module.exports = (sequelize, DataTypes) => {
       year: DataTypes.INTEGER,
       transmission: DataTypes.STRING,
       available: DataTypes.BOOLEAN,
+      whosCreate: DataTypes.STRING,
+      whosUpdate: DataTypes.STRING,
+      whosDelete: DataTypes.STRING,
     },
     {
       sequelize,
       modelName: "car",
+      paranoid: true,
+      deletedAt: "deletedAt",
     }
   );
   return car;

@@ -24,8 +24,8 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        username: "SuperAdmin_1",
-        email: "superadmin_1@email.com",
+        username: "SuperAdmin_2",
+        email: "superadmin_2@email.com",
         password: password,
         role: "superadmin",
         createdAt: new Date(),

@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "db:undo": "npx sequelize db:migrate:undo:all",
-    "db:migrate": "npx sequelize db:migrate",
-    "db:seed": "npx sequelize db:seed:all"
+    "drop": "npx sequelize db:migrate:undo:all",
+    "migrate": "npx sequelize db:migrate",
+    "seed": "npx sequelize db:seed:all",
+    "refresh": "npx sequelize db:migrate:undo:all && npx sequelize db:migrate"
   },
   "keywords": [],
   "author": "",

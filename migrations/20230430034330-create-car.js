@@ -30,12 +30,24 @@ module.exports = {
       available: {
         type: Sequelize.BOOLEAN,
       },
+      whosCreate: {
+        type: Sequelize.STRING,
+      },
+      whosUpdate: {
+        type: Sequelize.STRING,
+      },
+      whosDelete: {
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
+        type: Sequelize.DATE,
+      },
+      deletedAt: {
         type: Sequelize.DATE,
       },
     });

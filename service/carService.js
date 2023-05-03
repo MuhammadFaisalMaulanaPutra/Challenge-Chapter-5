@@ -2,6 +2,8 @@ const { car } = require("../models");
 
 module.exports = {
   getAllData,
+  getAllDataAvailable,
+  getAllDataWithDeleted,
   getDataById,
   getLatestData,
   storeData,
@@ -12,6 +14,26 @@ module.exports = {
 async function getAllData() {
   const data = await car.findAll({
     order: [["id", "ASC"]],
+  });
+
+  return data;
+}
+
+async function getAllDataAvailable() {
+  const data = await car.findAll({
+    where: {
+      available: true,
+    },
+    order: [["id", "ASC"]],
+  });
+
+  return data;
+}
+
+async function getAllDataWithDeleted() {
+  const data = await car.findAll({
+    order: [["id", "ASC"]],
+    paranoid: false,
   });
 
   return data;
@@ -40,6 +62,8 @@ async function storeData(value) {
     year: value.year,
     transmission: value.transmission,
     available: value.available,
+    whosCreate: value.whosCreate,
+    whosUpdate: value.whosCreate,
   });
 
   return;
@@ -55,6 +79,7 @@ async function updateData(id, value) {
       year: value.year,
       transmission: value.transmission,
       available: value.available,
+      whosUpdate: value.whosUpdate,
     },
     {
       where: {
@@ -66,7 +91,18 @@ async function updateData(id, value) {
   return;
 }
 
-async function destroyData(id) {
+async function destroyData(id, value) {
+  await car.update(
+    {
+      whosDelete: value,
+    },
+    {
+      where: {
+        id,
+      },
+    }
+  );
+
   await car.destroy({
     where: {
       id,

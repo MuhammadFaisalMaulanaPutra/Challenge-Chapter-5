@@ -1,4 +1,4 @@
-const userService = require("../service/userService");
+const UserService = require("../service/UserService");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -8,7 +8,7 @@ module.exports = {
     const value = req.body;
     value.role = "member";
 
-    const rgsEmail = await userService.getDataByEmail(email);
+    const rgsEmail = await UserService.getDataByEmail(value.email);
 
     if (rgsEmail) {
       res.status(400).json({
@@ -20,7 +20,7 @@ module.exports = {
     const salt = await bcrypt.genSalt(10);
     value.password = await bcrypt.hash(req.body.password, salt);
 
-    await userService.storeData(value);
+    await UserService.storeData(value);
 
     const attributes = [
       "id",
@@ -30,7 +30,7 @@ module.exports = {
       "createdAt",
       "updatedAt",
     ];
-    const data = await userService.getDataLatest(attributes);
+    const data = await UserService.getDataLatest(attributes);
 
     res.status(201).json({
       status: 201,
@@ -40,7 +40,7 @@ module.exports = {
   },
 
   async signIn(req, res) {
-    const User = await userService.getDataByEmail(req.body.email);
+    const User = await UserService.getDataByEmail(req.body.email);
 
     if (!User) {
       res.status(404).json({
@@ -85,7 +85,7 @@ module.exports = {
       "updatedAt",
     ];
 
-    const data = await userService.getDataByIdWithAttr(User.id, attributes);
+    const data = await UserService.getDataByIdWithAttr(User.id, attributes);
 
     res.status(200).json({
       status: 200,
@@ -99,7 +99,7 @@ module.exports = {
     const value = req.body;
     value.role = "admin";
 
-    const rgsEmail = await userService.getDataByEmail(email);
+    const rgsEmail = await UserService.getDataByEmail(value.email);
 
     if (rgsEmail) {
       res.status(400).json({
@@ -111,7 +111,7 @@ module.exports = {
     const salt = await bcrypt.genSalt(10);
     value.password = await bcrypt.hash(req.body.password, salt);
 
-    await userService.storeData(value);
+    await UserService.storeData(value);
 
     const attributes = [
       "id",
@@ -121,7 +121,7 @@ module.exports = {
       "createdAt",
       "updatedAt",
     ];
-    const data = await userService.getDataLatest(attributes);
+    const data = await UserService.getDataLatest(attributes);
 
     res.status(201).json({
       status: 201,
@@ -142,7 +142,7 @@ module.exports = {
       "updatedAt",
     ];
 
-    const data = await userService.getDataByIdWithAttr(User.id, attributes);
+    const data = await UserService.getDataByIdWithAttr(User.id, attributes);
     res.status(200).json({
       status: 200,
       message: "Getting data was Successfully",

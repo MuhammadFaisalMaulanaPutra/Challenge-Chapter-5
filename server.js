@@ -2,27 +2,17 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
-// Controllers
-const carController = require("./controllers/carController");
-const userController = require("./controllers/userController");
-
-// Middlewares
-const auth = require("./middlewares/auth");
-const role = require("./middlewares/identifyRole");
+// Routes
+const user = require("./routes/user");
+const car = require("./routes/car");
 
 app.use(express.json());
 
 // Cars Routes
-app.get("/api/cars-list", auth, role.isAdmin, carController.list);
-app.post("/api/cars-store", auth, role.isAdmin, carController.store);
-app.put("/api/cars-update/:id", auth, role.isAdmin, carController.update);
-app.delete("/api/cars-destroy/:id", auth, role.isAdmin, carController.destroy);
+app.use("/api/car", car);
 
-//User Routes
-app.get("/api/get-current-user", auth, userController.currentUser);
-app.post("/api/sign-up", userController.signUp);
-app.post("/api/sign-in", userController.signIn);
-app.post("/api/add-admin", auth, role.isSuperAdmin, userController.addAdmin);
+// User Routes
+app.use("/api/user", user);
 
 app.listen(port, () => {
   console.log(`Server sudah berjalan, silahkan buka http://localhost:${port}`);
