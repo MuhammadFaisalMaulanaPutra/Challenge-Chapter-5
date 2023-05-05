@@ -16,12 +16,10 @@ const verifyToken = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    const dateNow = new Date();
-    const miliseconds = dateNow.getTime() / 1000;
-    if (decoded.exp < miliseconds) {
+    if (!decoded) {
       return res.status(401).json({
         status: 401,
-        message: "Token is Expired",
+        message: "Token is Invalid",
       });
     }
 

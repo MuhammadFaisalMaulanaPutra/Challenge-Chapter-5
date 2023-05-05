@@ -5,16 +5,17 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "drop": "npx sequelize db:migrate:undo:all",
-    "migrate": "npx sequelize db:migrate",
-    "seed": "npx sequelize db:seed:all",
-    "refresh": "npx sequelize db:migrate:undo:all && npx sequelize db:migrate"
+    "db:drop-all": "npx sequelize db:migrate:undo:all",
+    "db:migrate": "npx sequelize db:migrate",
+    "db:seed": "npx sequelize db:seed:all",
+    "db:refresh": "npx sequelize db:migrate:undo:all && npx sequelize db:migrate"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",

@@ -21,6 +21,15 @@ async function getAllData() {
 
 async function getAllDataAvailable() {
   const data = await car.findAll({
+    attributes: [
+      "id",
+      "plate",
+      "model",
+      "manufacture",
+      "capacity",
+      "year",
+      "transmission",
+    ],
     where: {
       available: true,
     },

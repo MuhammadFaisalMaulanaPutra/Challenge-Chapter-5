@@ -1,4 +1,4 @@
-const CarService = require("../service/CarService");
+const CarService = require("../service/carService");
 
 module.exports = {
   async list(req, res) {

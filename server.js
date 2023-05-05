@@ -1,4 +1,5 @@
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const app = express();
 const port = 3000;
 
@@ -7,6 +8,7 @@ const user = require("./routes/user");
 const car = require("./routes/car");
 
 app.use(express.json());
+app.use(cookieParser());
 
 // Cars Routes
 app.use("/api/car", car);

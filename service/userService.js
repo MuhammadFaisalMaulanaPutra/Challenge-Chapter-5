@@ -4,10 +4,12 @@ module.exports = {
   getDataAll,
   getDataAllWithAttr,
   getDataByEmail,
+  getDataByRefreshToken,
   getDataById,
   getDataByIdWithAttr,
   getDataLatest,
   storeData,
+  updateRefreshToken,
 };
 
 async function getDataAll() {
@@ -47,6 +49,16 @@ async function getDataByEmail(email) {
   return data;
 }
 
+async function getDataByRefreshToken(RefreshToken) {
+  const data = await user.findOne({
+    where: {
+      refresh_token: RefreshToken,
+    },
+  });
+
+  return data;
+}
+
 async function getDataLatest(attributes) {
   const data = await user.findOne({
     attributes: attributes,
@@ -65,4 +77,17 @@ async function storeData(value) {
   });
 
   return;
+}
+
+async function updateRefreshToken(id, value) {
+  await user.update(
+    {
+      refresh_token: value,
+    },
+    {
+      where: {
+        id,
+      },
+    }
+  );
 }

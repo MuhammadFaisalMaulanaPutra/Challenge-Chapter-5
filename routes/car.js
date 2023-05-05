@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 // Controllers
-const CarController = require("../controllers/CarController");
+const CarController = require("../controllers/carController");
 
 // Middlewares
 const auth = require("../middlewares/auth");
