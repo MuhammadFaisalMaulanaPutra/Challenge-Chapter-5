@@ -21,8 +21,8 @@ module.exports = {
     });
   },
 
-  async list_withDeleted(req, res) {
-    const list = await CarService.getAllDataWithDeleted();
+  async list_deleted(req, res) {
+    const list = await CarService.getAllDataDeleted();
 
     res.status(200).json({
       status: 200,
@@ -33,7 +33,7 @@ module.exports = {
 
   async store(req, res) {
     const value = req.body;
-    value.whosCreate = req.user.username;
+    value.whos_create = req.user.id;
 
     await CarService.storeData(value);
 
@@ -48,7 +48,7 @@ module.exports = {
 
   async update(req, res) {
     const value = req.body;
-    value.whosUpdate = req.user.username;
+    value.whos_update = req.user.id;
 
     const id = req.params.id;
 
@@ -65,9 +65,9 @@ module.exports = {
 
   async destroy(req, res) {
     const id = req.params.id;
-    const name = req.user.username;
+    const user_id = req.user.id;
 
-    await CarService.destroyData(id, name);
+    await CarService.destroyData(id, user_id);
 
     res.status(202).json({
       status: 202,

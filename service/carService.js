@@ -1,9 +1,10 @@
-const { car } = require("../models");
+const { car, user } = require("../models");
+const { Op } = require("sequelize");
 
 module.exports = {
   getAllData,
   getAllDataAvailable,
-  getAllDataWithDeleted,
+  getAllDataDeleted,
   getDataById,
   getLatestData,
   storeData,
@@ -13,7 +14,34 @@ module.exports = {
 
 async function getAllData() {
   const data = await car.findAll({
-    order: [["id", "ASC"]],
+    attributes: {
+      exclude: [
+        "whos_create",
+        "whos_update",
+        "whos_delete",
+        "createdAt",
+        "updatedAt",
+        "deletedAt",
+      ],
+    },
+    order: [["id", "DESC"]],
+    include: [
+      {
+        model: user,
+        as: "whosCreate",
+        attributes: ["id", "username", "role"],
+      },
+      {
+        model: user,
+        as: "whosUpdate",
+        attributes: ["id", "username", "role"],
+      },
+      {
+        model: user,
+        as: "whosDelete",
+        attributes: ["id", "username", "role"],
+      },
+    ],
   });
 
   return data;
@@ -39,9 +67,41 @@ async function getAllDataAvailable() {
   return data;
 }
 
-async function getAllDataWithDeleted() {
+async function getAllDataDeleted() {
   const data = await car.findAll({
+    attributes: [
+      "id",
+      "plate",
+      "model",
+      "manufacture",
+      "capacity",
+      "year",
+      "transmission",
+    ],
     order: [["id", "ASC"]],
+    where: {
+      whos_delete: {
+        [Op.not]: null,
+      },
+    },
+
+    include: [
+      {
+        model: user,
+        as: "whosCreate",
+        attributes: ["id", "username", "role"],
+      },
+      {
+        model: user,
+        as: "whosUpdate",
+        attributes: ["id", "username", "role"],
+      },
+      {
+        model: user,
+        as: "whosDelete",
+        attributes: ["id", "username", "role"],
+      },
+    ],
     paranoid: false,
   });
 
@@ -56,7 +116,34 @@ async function getDataById(id) {
 
 async function getLatestData() {
   const data = await car.findOne({
+    attributes: {
+      exclude: [
+        "whos_create",
+        "whos_update",
+        "whos_delete",
+        "createdAt",
+        "updatedAt",
+        "deletedAt",
+      ],
+    },
     order: [["id", "DESC"]],
+    include: [
+      {
+        model: user,
+        as: "whosCreate",
+        attributes: ["id", "username", "role"],
+      },
+      {
+        model: user,
+        as: "whosUpdate",
+        attributes: ["id", "username", "role"],
+      },
+      {
+        model: user,
+        as: "whosDelete",
+        attributes: ["id", "username", "role"],
+      },
+    ],
   });
 
   return data;
@@ -71,8 +158,8 @@ async function storeData(value) {
     year: value.year,
     transmission: value.transmission,
     available: value.available,
-    whosCreate: value.whosCreate,
-    whosUpdate: value.whosCreate,
+    whos_create: value.whos_create,
+    whos_update: value.whos_create,
   });
 
   return;
@@ -88,7 +175,7 @@ async function updateData(id, value) {
       year: value.year,
       transmission: value.transmission,
       available: value.available,
-      whosUpdate: value.whosUpdate,
+      whos_update: value.whos_update,
     },
     {
       where: {
@@ -103,7 +190,7 @@ async function updateData(id, value) {
 async function destroyData(id, value) {
   await car.update(
     {
-      whosDelete: value,
+      whos_delete: value,
     },
     {
       where: {

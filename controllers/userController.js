@@ -1,4 +1,4 @@
-const UserService = require("../service/userService");
+const UserService = require("../service/UserService");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -72,26 +72,25 @@ module.exports = {
       },
       process.env.ACCESS_TOKEN_SECRET,
       {
-        expiresIn: "20s",
+        expiresIn: "1d",
       }
     );
 
     const refreshToken = jwt.sign(
       {
         id: User.id,
+        username: User.username,
         email: User.email,
+        role: User.role,
       },
       process.env.REFRESH_TOKEN_SECRET
     );
-
-    await UserService.updateRefreshToken(User.id, refreshToken);
 
     const attributes = [
       "id",
       "username",
       "email",
       "role",
-      "refresh_token",
       "createdAt",
       "updatedAt",
     ];
@@ -120,15 +119,6 @@ module.exports = {
       });
     }
 
-    const User = await UserService.getDataByRefreshToken(refreshToken);
-
-    if (!User) {
-      return res.status(403).json({
-        status: 403,
-        message: "User Forbidden",
-      });
-    }
-
     const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
 
     if (!decoded) {
@@ -140,14 +130,14 @@ module.exports = {
 
     const token = jwt.sign(
       {
-        id: User.id,
-        username: User.username,
-        email: User.email,
-        role: User.role,
+        id: decoded.id,
+        username: decoded.username,
+        email: decoded.email,
+        role: decoded.role,
       },
       process.env.ACCESS_TOKEN_SECRET,
       {
-        expiresIn: "20s",
+        expiresIn: "1d",
       }
     );
 
@@ -163,11 +153,6 @@ module.exports = {
 
     if (!refreshToken) return res.status(204);
 
-    const User = await UserService.getDataByRefreshToken(refreshToken);
-
-    if (!User) return res.status(204);
-
-    await UserService.updateRefreshToken(User.id, null);
     res.clearCookie("refreshToken");
 
     res.status(200).json({

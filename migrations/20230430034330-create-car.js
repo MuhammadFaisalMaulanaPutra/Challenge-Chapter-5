@@ -30,14 +30,14 @@ module.exports = {
       available: {
         type: Sequelize.BOOLEAN,
       },
-      whosCreate: {
-        type: Sequelize.STRING,
+      whos_create: {
+        type: Sequelize.INTEGER,
       },
-      whosUpdate: {
-        type: Sequelize.STRING,
+      whos_update: {
+        type: Sequelize.INTEGER,
       },
-      whosDelete: {
-        type: Sequelize.STRING,
+      whos_delete: {
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,

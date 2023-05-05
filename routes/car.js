@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 // Controllers
-const CarController = require("../controllers/carController");
+const CarController = require("../controllers/CarController");
 
 // Middlewares
 const auth = require("../middlewares/auth");
@@ -12,10 +12,10 @@ const role = require("../middlewares/identifyRole");
 router.get("/list-available", auth, CarController.available_list);
 router.get("/list", auth, role.isAdmin, CarController.list);
 router.get(
-  "/list-with_deleted",
+  "/list-deleted",
   auth,
   role.isAdmin,
-  CarController.list_withDeleted
+  CarController.list_deleted
 );
 router.post("/store", auth, role.isAdmin, CarController.store);
 router.put("/update/:id", auth, role.isAdmin, CarController.update);
