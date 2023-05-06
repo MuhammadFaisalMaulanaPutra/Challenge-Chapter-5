@@ -44,7 +44,7 @@ npm run dev
 
 ## Attributes Table
 
-#### Cars Tabel
+#### Cars Table
 
 ```js
 id = INTEGER;
