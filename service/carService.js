@@ -109,7 +109,36 @@ async function getAllDataDeleted() {
 }
 
 async function getDataById(id) {
-  const data = await car.findByPk(id);
+  const data = await car.findByPk(id, {
+    attributes: {
+      exclude: [
+        "whos_create",
+        "whos_update",
+        "whos_delete",
+        "createdAt",
+        "updatedAt",
+        "deletedAt",
+      ],
+    },
+    order: [["id", "DESC"]],
+    include: [
+      {
+        model: user,
+        as: "whosCreate",
+        attributes: ["id", "username", "role"],
+      },
+      {
+        model: user,
+        as: "whosUpdate",
+        attributes: ["id", "username", "role"],
+      },
+      {
+        model: user,
+        as: "whosDelete",
+        attributes: ["id", "username", "role"],
+      },
+    ],
+  });
 
   return data;
 }

@@ -4,6 +4,18 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 module.exports = {
+  async list(req, res) {
+    const attributes = ["id", "username", "email", "role"];
+
+    const data = await UserService.getDataAll(attributes);
+
+    res.status(200).json({
+      status: 200,
+      message: "Getting List Data was Successfully",
+      data: data,
+    });
+  },
+
   async signUp(req, res) {
     const value = req.body;
     value.role = "member";
@@ -105,7 +117,7 @@ module.exports = {
       status: 200,
       message: "User SignIn was Succesfully",
       data: data,
-      token: token,
+      accessToken: token,
     });
   },
 
@@ -144,7 +156,7 @@ module.exports = {
     res.status(200).json({
       status: 200,
       message: "Generating Refresh Token was Successfully",
-      token: token,
+      accessToken: token,
     });
   },
 
@@ -199,14 +211,7 @@ module.exports = {
   async currentUser(req, res) {
     const User = req.user;
 
-    const attributes = [
-      "id",
-      "username",
-      "email",
-      "role",
-      "createdAt",
-      "updatedAt",
-    ];
+    const attributes = ["id", "username", "email", "role"];
 
     const data = await UserService.getDataByIdWithAttr(User.id, attributes);
     res.status(200).json({

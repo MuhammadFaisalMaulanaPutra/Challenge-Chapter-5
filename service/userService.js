@@ -2,7 +2,6 @@ const { user } = require("../models");
 
 module.exports = {
   getDataAll,
-  getDataAllWithAttr,
   getDataByEmail,
   getDataById,
   getDataByIdWithAttr,
@@ -10,13 +9,7 @@ module.exports = {
   storeData,
 };
 
-async function getDataAll() {
-  const data = await user.findAll();
-
-  return data;
-}
-
-async function getDataAllWithAttr(attributes) {
+async function getDataAll(attributes) {
   const data = await user.findAll({
     attributes: attributes,
   });

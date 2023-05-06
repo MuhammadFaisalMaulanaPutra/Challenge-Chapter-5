@@ -2,12 +2,12 @@ const CarService = require("../service/carService");
 
 module.exports = {
   async list(req, res) {
-    const list = await CarService.getAllData();
+    const data = await CarService.getAllData();
 
     res.status(200).json({
       status: 200,
-      message: "List data already to use",
-      data: list,
+      message: "Getting List Data was Successfully",
+      data: data,
     });
   },
 
