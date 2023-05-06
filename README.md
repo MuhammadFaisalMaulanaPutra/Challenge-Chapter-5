@@ -34,89 +34,43 @@ npm run db:migrate
 npm run db:seed
 ```
 
-- Buat file `.env` sesuaikan dengan file `example.env` atau rename file `example.env` menjadi `.env`
+- Buat file `.env` sesuaikan dengan file `example.env` atau rename file `example.env` menjadi `.env`.
+
+- Jalankan command-line dibawah ini untuk menjalankan server
+
+```bash
+npm run dev
+```
 
 ## Attributes Table
 
 #### Cars Tabel
 
 ```js
-car.attributes = {
-  id: {
-    DataTypes: INTEGER,
-    autoIncrement: true,
-  },
-  plate: {
-    DataTypes: STRING,
-  },
-  model: {
-    DataTypes: STRING,
-  },
-  manufacture: {
-    DataTypes: STRING,
-  },
-  capacity: {
-    DataTypes: INTEGER,
-  },
-  year: {
-    DataTypes: INTEGER,
-  },
-  transmission: {
-    DataTypes: STRING,
-  },
-  available: {
-    DataTypes: BOOLEAN,
-  },
-  whos_create: {
-    DataTypes: INTEGER,
-  },
-  whos_update: {
-    DataTypes: INTEGER,
-  },
-  whos_delete: {
-    DataTypes: INTEGER,
-  },
-  createdAt: {
-    allowNull: false,
-    DataTypes: DATE,
-  },
-  updatedAt: {
-    allowNull: false,
-    DataTypes: DATE,
-  },
-  deletedAt: {
-    DataTypes: DATE,
-  },
-};
+id = INTEGER;
+plate = STRING;
+model = STRING;
+manufacture = STRING;
+capacity = INTEGER;
+year = INTEGER;
+transmission = STRING;
+available = BOOLEAN;
+whos_create = INTEGER;
+whos_update = INTEGER;
+whos_delete = INTEGER;
+createdAt = DATE;
+updatedAt = DATE;
+deletedAt = DATE;
 ```
 
 #### Users Table
 
 ```js
-user.attributes = {
-  id: {
-    DataTypes: INTEGER,
-    autoIncrement: true,
-  },
-  username: {
-    DataTypes: STRING,
-  },
-  email: {
-    DataTypes: STRING,
-  },
-  password: {
-    DataTypes: TEXT,
-  },
-  role: {
-    DataTypes: STRING,
-  },
-  createdAt: {
-    allowNull: false,
-    DataTypes: DATE,
-  },
-  updatedAt: {
-    allowNull: false,
-    DataTypes: DATE,
-  },
-};
+id = INTEGER;
+username = STRING;
+email = STRING;
+password = TEXT;
+role = STRING;
+createdAt = DATE;
+updatedAt = DATE;
 ```
