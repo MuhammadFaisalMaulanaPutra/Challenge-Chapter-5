@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
     "dev": "nodemon server.js",
     "db:drop-all": "npx sequelize db:migrate:undo:all",
     "db:migrate": "npx sequelize db:migrate",
