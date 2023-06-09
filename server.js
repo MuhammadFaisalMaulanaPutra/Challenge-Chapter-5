@@ -10,6 +10,13 @@ const car = require("./routes/car");
 app.use(express.json());
 app.use(cookieParser());
 
+app.get("/", (req, res) => {
+  return res.status(200).json({
+    status: true,
+    message: "server running",
+  });
+});
+
 // Cars Routes
 app.use("/api/car", car);
 
